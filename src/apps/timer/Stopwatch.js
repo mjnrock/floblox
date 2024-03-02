@@ -37,9 +37,9 @@ export const Reducers = () => ({
 });
 
 
-export const Factory = (state, action) => {
+export const Factory = (state) => {
 	const config = {
-		state,
+		state: state ?? State(),
 		reducers: Reducers(),
 		effects: [
 			(state, action) => console.log("State:", state, "Action:", action),
