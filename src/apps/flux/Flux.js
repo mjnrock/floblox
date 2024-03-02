@@ -14,7 +14,7 @@ export const State = (initialState = {}) => {
 export const Reducers = (reducers) => reducers;
 
 export const Factory = (config = {}) => {
-	const { getState, setState } = State(config.initialState);
+	const { getState, setState } = State(config.state);
 	const reducers = Reducers(config.reducers);
 	const effects = config.effects || [];
 
@@ -31,7 +31,14 @@ export const Factory = (config = {}) => {
 		effects.push(effect);
 	};
 
-	return { getState, dispatch, subscribe };
+	const unsubscribe = (effect) => {
+		const index = effects.indexOf(effect);
+		if(index > -1) {
+			effects.splice(index, 1);
+		}
+	}
+
+	return { getState, dispatch, subscribe, unsubscribe };
 };
 
 export default {

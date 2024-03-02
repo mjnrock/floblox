@@ -1,4 +1,4 @@
-import Flux from "../../lib/Flux.js";
+import Flux from "../flux/Flux.js";
 
 export const State = () => ({
 	time: 0,
@@ -39,7 +39,7 @@ export const Reducers = () => ({
 
 export const Factory = (state, action) => {
 	const config = {
-		initialState: state,
+		state,
 		reducers: Reducers(),
 		effects: [
 			(state, action) => console.log("State:", state, "Action:", action),

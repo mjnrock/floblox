@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-export const Stopwatch = ({ stopwatch }) => {
-	const [ time, setTime ] = useState(stopwatch.getState().time);
-	const [ laps, setLaps ] = useState(stopwatch.getState().laps);
+import { useFlux } from "../../flux/hooks/useFlux";
 
+export const useStopwatch = (stopwatch, running) => {
 	useEffect(() => {
-		const update = (state) => {
-			setTime(state.time);
-			setLaps(state.laps);
-		};
-		stopwatch.subscribe(update);
-
 		const tickInterval = setInterval(() => {
-			if(stopwatch.getState().running) {
+			if(running) {
 				stopwatch.dispatch({ type: "tick" });
 			}
 		}, 10);
 
 		return () => clearInterval(tickInterval);
-	}, []);
+	}, [ running, stopwatch ]);
+};
+
+
+export const Stopwatch = ({ stopwatch }) => {
+	const flux = useFlux(stopwatch);
+	const time = flux.useSelector(state => state.time);
+	const laps = flux.useSelector(state => state.laps);
+	const running = flux.useSelector(state => state.running);
+	useStopwatch(stopwatch, running);
 
 	const handleStart = () => stopwatch.dispatch({ type: "start" });
 	const handleStop = () => stopwatch.dispatch({ type: "stop" });
