@@ -6,7 +6,7 @@ export const useTimer = (timer, running) => {
 		let interval;
 		if(running) {
 			interval = setInterval(() => {
-				timer.dispatch({ type: "tick", payload: 10 });
+				timer.dispatch({ type: "tick", data: 10 });
 			}, 10);
 		}
 

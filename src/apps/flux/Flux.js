@@ -21,9 +21,15 @@ export const Factory = (config = {}) => {
 	const dispatch = (action) => {
 		if(reducers[ action.type ]) {
 			const newState = reducers[ action.type ](getState(), action);
+			if(newState === getState()) {
+				return;
+			} else if(JSON.stringify(newState) === JSON.stringify(getState())) {
+				return;
+			}
+
 			setState(newState);
 
-			effects.forEach(effect => effect(getState(), action));
+			effects.forEach(effect => effect(getState(), action, dispatch));
 		}
 	};
 

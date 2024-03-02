@@ -1,7 +1,7 @@
 import Flux from "../flux/Flux.js";
 
 export const State = ({ duration } = {}) => ({
-	duration: duration,
+	duration,
 	elapsedTime: 0,
 	running: false,
 });
@@ -20,17 +20,22 @@ export const Reducers = () => ({
 		running: true,
 	}),
 	tick: (state, action) => {
-		const newElapsedTime = state.elapsedTime + action.payload;
+		const newElapsedTime = state.elapsedTime + action.data;
 		return {
 			...state,
 			elapsedTime: newElapsedTime,
 		};
 	},
-	reset: (state) => ({
-		...state,
-		running: false,
-		elapsedTime: 0,
-	}),
+	reset: (state) => {
+		if(state.running) {
+			return state;
+		} else {
+			return {
+				...state,
+				elapsedTime: 0,
+			};
+		}
+	},
 	complete: (state) => ({
 		...state,
 		running: false,
@@ -44,10 +49,11 @@ export const Factory = ({ duration } = {}) => {
 		state: initialState,
 		reducers: Reducers(),
 		effects: [
-			(state, action) => {
-				if(state.elapsedTime >= state.duration) {
-					console.log("Timer completed");
-					state = { ...state, running: false, elapsedTime: state.duration };
+			(state, { type, data }, dispatch) => {
+				if(type === "tick") {
+					if(state.running && state.elapsedTime >= state.duration) {
+						dispatch({ type: "complete" });
+					}
 				}
 			},
 		],
