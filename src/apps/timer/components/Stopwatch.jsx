@@ -1,36 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Factory, State } from "../Stopwatch.js"
+import React, { useEffect, useState } from "react";
 
-const fluxStopwatch = Factory(State());
-
-console.log(fluxStopwatch);
-
-export const Stopwatch = () => {
-	const [ time, setTime ] = useState(fluxStopwatch.getState().time);
-	const [ laps, setLaps ] = useState(fluxStopwatch.getState().laps);
+export const Stopwatch = ({ stopwatch }) => {
+	const [ time, setTime ] = useState(stopwatch.getState().time);
+	const [ laps, setLaps ] = useState(stopwatch.getState().laps);
 
 	useEffect(() => {
-		// Subscribe to state changes
 		const update = (state) => {
 			setTime(state.time);
 			setLaps(state.laps);
 		};
-		fluxStopwatch.subscribe(update);
+		stopwatch.subscribe(update);
 
-		// Set up the interval for the 'tick' action if the stopwatch is running
 		const tickInterval = setInterval(() => {
-			if(fluxStopwatch.getState().running) {
-				fluxStopwatch.dispatch({ type: 'tick' });
+			if(stopwatch.getState().running) {
+				stopwatch.dispatch({ type: "tick" });
 			}
-		}, 10); // Update every 10 milliseconds for demonstration
+		}, 10);
 
-		return () => clearInterval(tickInterval); // Cleanup on component unmount
+		return () => clearInterval(tickInterval);
 	}, []);
 
-	const handleStart = () => fluxStopwatch.dispatch({ type: 'start' });
-	const handleStop = () => fluxStopwatch.dispatch({ type: 'stop' });
-	const handleReset = () => fluxStopwatch.dispatch({ type: 'reset' });
-	const handleLap = () => fluxStopwatch.dispatch({ type: 'lap' });
+	const handleStart = () => stopwatch.dispatch({ type: "start" });
+	const handleStop = () => stopwatch.dispatch({ type: "stop" });
+	const handleReset = () => stopwatch.dispatch({ type: "reset" });
+	const handleLap = () => stopwatch.dispatch({ type: "lap" });
 
 	return (
 		<div>
