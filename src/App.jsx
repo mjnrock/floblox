@@ -8,7 +8,10 @@ import TimerComponent from "./apps/timer/components/Timer.jsx";
 
 export function App() {
 	const stopwatch = useRef(Stopwatch.Factory());
-	const timer = useRef(Timer.Factory({ duration: 2750 }));
+	const timer = useRef(Timer.Factory({
+		duration: 2750,
+		loop: true,
+	}));
 
 	return (
 		<div>

@@ -1,9 +1,14 @@
 import Flux from "../flux/Flux.js";
 
-export const State = ({ duration } = {}) => ({
+export const State = ({
 	duration,
+	loop = false,
+} = {}) => ({
+	duration,
+	loop,
 	elapsedTime: 0,
 	running: false,
+	counter: 0,
 });
 
 export const Reducers = () => ({
@@ -36,23 +41,43 @@ export const Reducers = () => ({
 			};
 		}
 	},
-	complete: (state) => ({
+	complete: (state) => {
+		const newState = {
+			...state,
+			elapsedTime: state.loop ? 0 : state.duration,
+			running: state.loop,
+			counter: state.counter + 1,
+		};
+
+		if(state.loop) {
+			newState.elapsedTime = 0;
+		} else {
+			newState.running = false;
+		}
+
+		return newState;
+	},
+	toggleLoop: (state) => ({
 		...state,
-		running: false,
-		elapsedTime: state.duration,
+		loop: !state.loop,
 	}),
 });
 
-export const Factory = ({ duration } = {}) => {
-	const initialState = State({ duration });
+export const Factory = ({ duration, loop } = {}) => {
+	const initialState = State({ duration, loop });
 	const config = {
 		state: initialState,
 		reducers: Reducers(),
 		effects: [
-			(state, { type, data }, dispatch) => {
-				if(type === "tick") {
+			(state, action, dispatch) => {
+				if(action.type === "tick") {
 					if(state.running && state.elapsedTime >= state.duration) {
 						dispatch({ type: "complete" });
+
+						if(state.loop) {
+							dispatch({ type: "reset" });
+							dispatch({ type: "start" });
+						}
 					}
 				}
 			},
