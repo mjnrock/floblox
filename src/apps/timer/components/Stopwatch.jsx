@@ -1,19 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Actions } from "../Stopwatch";
 
 import { useFlux } from "../../flux/hooks/useFlux";
-
-export const useStopwatch = (stopwatch, running) => {
-	useEffect(() => {
-		const tickInterval = setInterval(() => {
-			if(running) {
-				stopwatch.dispatch({ type: "tick" });
-			}
-		}, 10);
-
-		return () => clearInterval(tickInterval);
-	}, [ running, stopwatch ]);
-};
 
 
 export const Stopwatch = ({ stopwatch }) => {

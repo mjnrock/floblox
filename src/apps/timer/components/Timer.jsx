@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useFlux } from "../../flux/hooks/useFlux";
 
 import { Actions } from "../Timer";
