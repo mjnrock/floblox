@@ -13,6 +13,7 @@ export const State = (initialState = {}) => {
 
 export const Reducers = (reducers) => reducers;
 
+/* { state, reducers, effect } = config;	*/
 export const Factory = (config = {}) => {
 	const { getState, setState } = State(config.state);
 	const reducers = Reducers(config.reducers);

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { Actions } from "../Stopwatch";
 
 import { useFlux } from "../../flux/hooks/useFlux";
 
@@ -20,10 +21,16 @@ export const Stopwatch = ({ stopwatch }) => {
 	const time = flux.useSelector(state => state.time);
 	const laps = flux.useSelector(state => state.laps);
 	const running = flux.useSelector(state => state.running);
-	useStopwatch(stopwatch, running);
 
-	const handleStart = () => stopwatch.dispatch({ type: "start" });
-	const handleStop = () => stopwatch.dispatch({ type: "stop" });
+	const actions = useRef(Actions(stopwatch));
+	const interval = useRef();
+
+	const handleStart = () => {
+		if(!running) {
+			interval.current = actions.current.start({ interval: 10 });
+		}
+	};
+	const handleStop = () => actions.current.stop(interval.current);
 	const handleReset = () => stopwatch.dispatch({ type: "reset" });
 	const handleLap = () => stopwatch.dispatch({ type: "lap" });
 

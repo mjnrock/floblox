@@ -1,18 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import { useFlux } from "../../flux/hooks/useFlux";
 
-export const useTimer = (timer, running) => {
-	useEffect(() => {
-		let interval;
-		if(running) {
-			interval = setInterval(() => {
-				timer.dispatch({ type: "tick", data: 10 });
-			}, 10);
-		}
-
-		return () => clearInterval(interval);
-	}, [ running, timer ]);
-};
+import { Actions } from "../Timer";
 
 export const Timer = ({ timer }) => {
 	const flux = useFlux(timer);
@@ -22,15 +11,15 @@ export const Timer = ({ timer }) => {
 	const duration = flux.useSelector(state => state.duration);
 	const counter = flux.useSelector(state => state.counter);
 
-	useTimer(timer, running);
+	const actions = useRef(Actions(timer));
+	const interval = useRef();
 
 	const handleStartResume = () => {
 		if(!running) {
-			timer.dispatch(running ? { type: "pause" } : { type: "start" });
+			interval.current = actions.current.start({ interval: 10 });
 		}
 	};
-
-	const handlePause = () => timer.dispatch({ type: "pause" });
+	const handlePause = () => actions.current.pause(interval.current);
 	const handleReset = () => timer.dispatch({ type: "reset" });
 	const handleToggleLoop = () => timer.dispatch({ type: "toggleLoop" });
 

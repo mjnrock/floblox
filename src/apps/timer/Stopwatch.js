@@ -21,6 +21,7 @@ export const Reducers = () => ({
 		laps: [],
 		running: false,
 	}),
+	hardReset: (state) => State(),
 	tick: (state) => (
 		state.running ? {
 			...state,
@@ -36,6 +37,28 @@ export const Reducers = () => ({
 	}),
 });
 
+export const Actions = (flux) => ({
+	start: (data = {}) => {
+		flux.dispatch({ type: "start", data });
+
+		const tick = () => {
+			flux.dispatch({
+				type: "tick",
+				data: data.interval ?? (1000 / 60),
+			});
+		};
+
+		const interval = setInterval(tick, 10);
+
+		return () => {
+			clearInterval(interval);
+		};
+	},
+	stop: (clearFn) => {
+		clearFn();
+		flux.dispatch({ type: "stop" });
+	},
+});
 
 export const Factory = (state) => {
 	const config = {
@@ -52,5 +75,6 @@ export const Factory = (state) => {
 export default {
 	State,
 	Reducers,
+	Actions,
 	Factory,
 };
