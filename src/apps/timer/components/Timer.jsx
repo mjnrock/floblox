@@ -11,15 +11,15 @@ export const Timer = ({ timer }) => {
 	const duration = flux.useSelector(state => state.duration);
 	const counter = flux.useSelector(state => state.counter);
 
-	const actions = useRef(Actions(timer));
-	const interval = useRef();
+	const actions = Actions(timer);
+	let clearFn = useRef();
 
 	const handleStartResume = () => {
 		if(!running) {
-			interval.current = actions.current.start({ interval: 10 });
+			clearFn.current = actions.start({ interval: 10 });
 		}
 	};
-	const handlePause = () => actions.current.pause(interval.current);
+	const handlePause = () => actions.pause(clearFn.current);
 	const handleReset = () => timer.dispatch({ type: "reset" });
 	const handleToggleLoop = () => timer.dispatch({ type: "toggleLoop" });
 

@@ -10,15 +10,15 @@ export const Stopwatch = ({ stopwatch }) => {
 	const laps = flux.useSelector(state => state.laps);
 	const running = flux.useSelector(state => state.running);
 
-	const actions = useRef(Actions(stopwatch));
-	const interval = useRef();
+	const actions = Actions(stopwatch);
+	const clearFn = useRef();
 
 	const handleStart = () => {
 		if(!running) {
-			interval.current = actions.current.start({ interval: 10 });
+			clearFn.current = actions.start({ interval: 10 });
 		}
 	};
-	const handleStop = () => actions.current.stop(interval.current);
+	const handleStop = () => actions.stop(clearFn.current);
 	const handleReset = () => stopwatch.dispatch({ type: "reset" });
 	const handleLap = () => stopwatch.dispatch({ type: "lap" });
 
