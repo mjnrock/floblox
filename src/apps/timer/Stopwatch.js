@@ -28,14 +28,17 @@ export const Reducers = () => ({
 			time: state.time + 1,
 		} : state
 	),
-	lap: (state) => ({
-		...state,
-		laps: [
-			...state.laps,
-			state.time,
-		],
-	}),
+	lap: (state) => (
+		state.running ? {
+			...state,
+			laps: [
+				...state.laps,
+				state.time,
+			],
+		} : state
+	),
 });
+
 
 export const Actions = (flux) => ({
 	start: (data = {}) => {
