@@ -71,21 +71,37 @@ export const Reducers = () => ({
 
 export const Actions = (flux) => ({
 	start: (data = {}) => {
+		/* Fringe case where invoking this with an expired timer dispatching "complete" increments the `.counter` */
+		if(flux.getState().elapsedTime >= flux.getState().duration) {
+			return () => {};
+		}
+
 		flux.dispatch({ type: "start", data });
 
+		let dt = data.interval || 10;
 		const tick = () => {
 			flux.dispatch({
 				type: "tick",
-				data: data.interval ?? (1000 / 60),
+				data: dt,
 			});
+
+			if(flux.getState().elapsedTime >= flux.getState().duration) {
+				flux.dispatch({ type: "complete" });
+				if(flux.getState().loop) {
+					flux.dispatch({ type: "reset" });
+				} else {
+					clearInterval(interval);
+				}
+			}
 		};
 
-		const interval = setInterval(tick, 10);
+		const interval = setInterval(tick, dt);
 
 		return () => {
 			clearInterval(interval);
 		};
 	},
+
 	pause: (clearFn) => {
 		clearFn();
 		flux.dispatch({ type: "pause" });
@@ -93,6 +109,12 @@ export const Actions = (flux) => ({
 	stop: (clearFn) => {
 		clearFn();
 		flux.dispatch({ type: "stop" });
+	},
+	reset: () => {
+		flux.dispatch({ type: "reset" });
+	},
+	toggleLoop: () => {
+		flux.dispatch({ type: "toggleLoop" });
 	},
 });
 

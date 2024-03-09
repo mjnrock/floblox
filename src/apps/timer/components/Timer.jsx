@@ -20,8 +20,8 @@ export const Timer = ({ timer }) => {
 		}
 	};
 	const handlePause = () => actions.pause(clearFn.current);
-	const handleReset = () => timer.dispatch({ type: "reset" });
-	const handleToggleLoop = () => timer.dispatch({ type: "toggleLoop" });
+	const handleReset = () => actions.reset();
+	const handleToggleLoop = () => actions.toggleLoop();
 
 	return (
 		<div>

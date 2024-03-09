@@ -20,17 +20,19 @@ export const Factory = (config = {}) => {
 	const effects = config.effects || [];
 
 	const dispatch = (action) => {
-		if(reducers[ action.type ]) {
-			const newState = reducers[ action.type ](getState(), action);
-			if(newState === getState()) {
+		const reducer = reducers[ action.type ];
+		if(reducer) {
+			const state = getState();
+			const newState = reducer(state, action);
+			if(newState === state) {
 				return;
-			} else if(JSON.stringify(newState) === JSON.stringify(getState())) {
+			} else if(JSON.stringify(newState) === JSON.stringify(state)) {
 				return;
 			}
 
 			setState(newState);
 
-			effects.forEach(effect => effect(getState(), action, dispatch));
+			effects.forEach(effect => effect(state, action, dispatch));
 		}
 	};
 
