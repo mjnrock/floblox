@@ -22,12 +22,30 @@ import { createGlobalStyle } from "styled-components";
 import tw from "twin.macro";
 
 const GlobalStyle = createGlobalStyle`
-button {
-  ${ tw`bg-emerald-500 border-emerald-100 border text-white py-4 px-8 rounded` }
-}
+	body {
+		${ tw`text-center` }
+	}
+	h2 {
+		${ tw`text-2xl font-bold` }
+	}
+	button {
+		${ tw`bg-emerald-500 border-emerald-100 border border-solid  m-1 text-white py-4 px-8 rounded cursor-pointer` }
+
+		&:hover {
+			${ tw`bg-emerald-600 border-emerald-200` }
+		}
+
+		&:active {
+			${ tw`bg-emerald-700 border-emerald-300` }
+		}
+	}
+	input {
+		${ tw`text-neutral-700 p-1 m-1 rounded` }
+	}
 `;
 
 export function App() {
+	/* Create an instance of each module */
 	const stopwatch = useRef(Stopwatch.Factory());
 	const timer = useRef(Timer.Factory({
 		duration: 2750,
@@ -37,11 +55,22 @@ export function App() {
 	const deck = useRef(DeckOfCards.Factory({
 		seed: 2,
 	}));
-	const dice = useRef(Dice.Factory(6));
+	const dice = useRef(Dice.Factory({
+		sides: 5,
+	}));
 	const weightedDice = useRef(WeightedDice.Factory({
-		sides: 6,
 		weights: [ 1, 1 ],
 	}));
+
+	/* Convenience wrapper since we're using the same pattern for each module */
+	const modules = [
+		[ StopwatchComponent, { stopwatch: stopwatch?.current } ],
+		[ TimerComponent, { timer: timer?.current } ],
+		[ GeolocationComponent, { geo: geo?.current } ],
+		[ DeckOfCardsComponent, { deckOfCards: deck?.current } ],
+		[ DiceComponent, { dice: dice?.current } ],
+		[ WeightedDiceComponent, { weightedDice: weightedDice?.current } ],
+	];
 
 	return (
 		<>
@@ -49,24 +78,13 @@ export function App() {
 			<div
 				className="flex flex-col items-center justify-center w-screen bg-gray-800 text-white font-mono text-lg gap-2 p-2"
 			>
-				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
-					<StopwatchComponent stopwatch={ stopwatch?.current } />
-				</div>
-				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
-					<TimerComponent timer={ timer?.current } />
-				</div>
-				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
-					<GeolocationComponent geo={ geo?.current } />
-				</div>
-				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
-					<DeckOfCardsComponent deckOfCards={ deck?.current } />
-				</div>
-				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
-					<DiceComponent dice={ dice?.current } />
-				</div>
-				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
-					<WeightedDiceComponent weightedDice={ weightedDice?.current } />
-				</div>
+				{
+					modules.map(([ Component, props ], index) => (
+						<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+							<Component key={ index } { ...props } />
+						</div>
+					))
+				}
 			</div>
 		</>
 	);

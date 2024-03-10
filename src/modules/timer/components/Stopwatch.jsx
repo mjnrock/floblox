@@ -22,10 +22,12 @@ export const Stopwatch = ({ stopwatch }) => {
 	return (
 		<div>
 			<h2>Stopwatch: { time }ms</h2>
-			<button onClick={ handleStart }>Start</button>
-			<button onClick={ handleStop }>Stop</button>
-			<button onClick={ handleReset }>Reset</button>
-			<button onClick={ handleLap }>Lap</button>
+			<div>
+				<button onClick={ handleStart }>Start</button>
+				<button onClick={ handleStop }>Stop</button>
+				<button onClick={ handleReset }>Reset</button>
+				<button onClick={ handleLap }>Lap</button>
+			</div>
 			<h3>Laps:</h3>
 			<ul>
 				{ laps.map((lap, index) => (
