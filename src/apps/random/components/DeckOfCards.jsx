@@ -2,7 +2,7 @@ import { useFlux } from "../../flux/hooks/useFlux";
 
 export const DeckOfCards = ({ deckOfCards }) => {
 	const flux = useFlux(deckOfCards);
-	const deck = flux.useSelector(state => state.deck);
+	// const deck = flux.useSelector(state => state.deck);
 	const dealtCards = flux.useSelector(state => state.dealtCards);
 	const remainingCards = flux.useSelector(state => state.remainingCards);
 	const discardedCards = flux.useSelector(state => state.discardedCards);

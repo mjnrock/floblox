@@ -5,7 +5,6 @@ export const Geolocation = ({ geo }) => {
 	const flux = useFlux(geo);
 	const currentLocation = flux.useSelector(state => state.currentLocation);
 	const tracking = flux.useSelector(state => state.tracking);
-
 	const stopTrackingFn = useRef(() => { });
 
 	useEffect(() => {
@@ -24,12 +23,8 @@ export const Geolocation = ({ geo }) => {
 			stopTrackingFn.current = geo.actions.stopTracking;
 		}
 	};
-	const handleGetCurrentLocation = () => {
-		geo.actions.getCurrentLocation();
-	};
-	const handleStopAndClearTracking = () => {
-		geo.actions.stopAndClearTracking();
-	};
+	const handleGetCurrentLocation = () => geo.actions.getCurrentLocation();
+	const handleStopAndClearTracking = () => geo.actions.stopAndClearTracking();
 
 	const locationDisplay = currentLocation
 		? `Lat: ${ currentLocation.coords.latitude }, Lon: ${ currentLocation.coords.longitude }`
