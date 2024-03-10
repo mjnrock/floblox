@@ -7,20 +7,27 @@ export const WeightedDice = ({ weightedDice }) => {
 	const history = flux.useSelector(state => state.history);
 	const stats = flux.useSelector(state => state.stats);
 
-	// Local state to manage the weights input as a comma-separated list
-	const [ weightsInput, setWeightsInput ] = useState('');
+	const [ weightsInput, setWeightsInput ] = useState("");
+	const [ distributionOdds, setDistributionOdds ] = useState([]);
 
-	// Update the local state whenever the weights from the global state change
 	useEffect(() => {
-		setWeightsInput(weights.join(','));
+		setWeightsInput(weights.join(","));
 	}, [ weights ]);
+
+	useEffect(() => {
+		if(stats.dist && stats.dist.length > 0) {
+			const total = stats.dist.reduce((acc, curr) => acc + curr, 0);
+			const odds = stats.dist.map(dist => dist / total);
+			setDistributionOdds(odds);
+		}
+	}, [ stats.dist ]);
 
 	const handleChangeWeights = (e) => {
 		setWeightsInput(e.target.value);
 	};
 
 	const handleUpdateWeights = () => {
-		const weightsArray = weightsInput.split(',').map(weight => parseFloat(weight.trim())).filter(weight => !isNaN(weight));
+		const weightsArray = weightsInput.split(",").map(weight => parseFloat(weight.trim())).filter(weight => !isNaN(weight));
 		weightedDice.actions.setWeights(weightsArray);
 	};
 
@@ -56,6 +63,7 @@ export const WeightedDice = ({ weightedDice }) => {
 					<ul>
 						<li>Odds: { stats.odds.toString() }</li>
 						<li>Distribution: { stats.dist.toString() }</li>
+						<li>Dist. Odds: { distributionOdds.toString() }</li>
 						<li>Mean: { stats.mean.toFixed(2) }</li>
 						<li>Median: { stats.median.toFixed(2) }</li>
 						<li>Mode: { stats.mode.toFixed(2) }</li>
