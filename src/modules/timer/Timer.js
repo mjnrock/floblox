@@ -101,6 +101,11 @@ export const Actions = (flux) => ({
 			clearInterval(interval);
 		};
 	},
+	restart: (data = {}) => {
+		flux.dispatch({ type: "stop" });
+		flux.dispatch({ type: "reset" });
+		return flux.actions.start(data);
+	},
 
 	pause: (clearFn) => {
 		clearFn();

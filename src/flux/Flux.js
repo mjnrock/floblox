@@ -39,6 +39,17 @@ export const Factory = (config = {}) => {
 	const subscribe = (effect) => {
 		effects.push(effect);
 	};
+	const subscribeTo = (type, effect) => {
+		const sub = (state, action, dispatch) => {
+			if(action.type === type) {
+				effect(state, action, dispatch);
+			}
+		};
+
+		effects.push(sub);
+
+		return sub;
+	}
 
 	const unsubscribe = (effect) => {
 		const index = effects.indexOf(effect);
@@ -46,8 +57,14 @@ export const Factory = (config = {}) => {
 			effects.splice(index, 1);
 		}
 	}
+	const unsubscribeFrom = (sub) => {
+		const index = effects.indexOf(sub);
+		if(index > -1) {
+			effects.splice(index, 1);
+		}
+	}
 
-	return { getState, dispatch, subscribe, unsubscribe };
+	return { getState, dispatch, subscribe, unsubscribe, subscribeTo, unsubscribeFrom };
 };
 
 export default {
