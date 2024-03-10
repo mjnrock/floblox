@@ -32,7 +32,7 @@ export const Geolocation = ({ geo }) => {
 
 	return (
 		<div>
-			<h2>Current Location</h2>
+			<h2>Geolocation</h2>
 			<p>{ locationDisplay }</p>
 			<button onClick={ handleGetCurrentLocation }>Get Location</button>
 			<button onClick={ handleToggleTracking }>

@@ -21,9 +21,9 @@ export const Helpers = {
 	mulberry32: function (seed) {
 		return function () {
 			var t = seed += 0x6D2B79F5;
-			t = Math.imul(t ^ t >>> 15, t | 1);
-			t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-			return ((t ^ t >>> 14) >>> 0) / 4294967296;
+			t = Math.imul((t ^ (t >>> 15)), (t | 1));
+			t ^= (t + Math.imul((t ^ (t >>> 7)), (t | 61)));
+			return (((t ^ (t >>> 14)) >>> 0) / 4294967296);
 		}
 	},
 	shuffleArray: function (array, seed) {
@@ -35,23 +35,26 @@ export const Helpers = {
 	}
 };
 
-export const State = ({ seed } = {}) => ({
+export const State = ({ seed = Date.now() } = {}) => ({
 	deck: Helpers.generateDeck(seed),
 	dealtCards: [],
 	discardedCards: [],
 	remainingCards: 52,
+	seed,
 });
 
 export const Reducers = (helpers) => ({
 	shuffle: (state, action) => {
+		const newSeed = action.seed || state.seed;
 		const combinedDeck = [ ...state.deck, ...state.dealtCards, ...state.discardedCards ];
-		helpers.shuffleArray(combinedDeck, action.seed || Date.now());
+		helpers.shuffleArray(combinedDeck, newSeed);
 		return {
 			...state,
 			deck: combinedDeck,
 			dealtCards: [],
 			discardedCards: [],
 			remainingCards: combinedDeck.length,
+			seed: newSeed,
 		};
 	},
 	dealOneCard: (state) => {
@@ -65,21 +68,24 @@ export const Reducers = (helpers) => ({
 			remainingCards: state.remainingCards - 1,
 		};
 	},
-	resetDeck: (state) => ({
+	resetDeck: (state, action) => ({
 		...state,
-		deck: helpers.generateDeck(),
+		deck: helpers.generateDeck(action.seed || state.seed),
 		dealtCards: [],
 		discardedCards: [],
 		remainingCards: 52,
+		seed: action.seed || state.seed,
 	}),
 	shuffleRemaining: (state, action) => {
+		const newSeed = action.seed || state.seed;
 		const combinedDeck = [ ...state.deck, ...state.discardedCards ];
-		helpers.shuffleArray(combinedDeck, action.seed || Date.now());
+		helpers.shuffleArray(combinedDeck, newSeed);
 		return {
 			...state,
 			deck: combinedDeck,
 			discardedCards: [],
 			remainingCards: combinedDeck.length,
+			seed: newSeed,
 		};
 	},
 	discard: (state) => {
@@ -102,8 +108,8 @@ export const Actions = (flux) => ({
 	dealOneCard: () => {
 		flux.dispatch({ type: "dealOneCard" });
 	},
-	resetDeck: () => {
-		flux.dispatch({ type: "resetDeck" });
+	resetDeck: (seed) => {
+		flux.dispatch({ type: "resetDeck", seed });
 	},
 	shuffleRemaining: (seed) => {
 		flux.dispatch({ type: "shuffleRemaining", seed });

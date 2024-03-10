@@ -15,6 +15,9 @@ import DeckOfCardsComponent from "./apps/random/components/DeckOfCards.jsx";
 import Dice from "./apps/random/Dice.js";
 import DiceComponent from "./apps/random/components/Dice.jsx";
 
+import WeightedDice from "./apps/random/WeightedDice.js";
+import WeightedDiceComponent from "./apps/random/components/WeightedDice.jsx";
+
 export function App() {
 	const stopwatch = useRef(Stopwatch.Factory());
 	const timer = useRef(Timer.Factory({
@@ -26,6 +29,10 @@ export function App() {
 		seed: 2,
 	}));
 	const dice = useRef(Dice.Factory(6));
+	const weightedDice = useRef(WeightedDice.Factory({
+		sides: 6,
+		weights: [ 1, 1 ],
+	}));
 
 	return (
 		<div>
@@ -34,6 +41,7 @@ export function App() {
 			<GeolocationComponent geo={ geo?.current } />
 			<DeckOfCardsComponent deckOfCards={ deck?.current } />
 			<DiceComponent dice={ dice?.current } />
+			<WeightedDiceComponent weightedDice={ weightedDice?.current } />
 		</div>
 	);
 }

@@ -15,7 +15,7 @@ export const Dice = ({ dice }) => {
 
 	return (
 		<div>
-			<h2>Dice Roller</h2>
+			<h2>Dice</h2>
 			<div>
 				<label>
 					Number of sides:
