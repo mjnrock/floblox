@@ -1,22 +1,22 @@
 import { useRef } from "react";
 
-import Stopwatch from "./apps/timer/Stopwatch.js";
-import StopwatchComponent from "./apps/timer/components/Stopwatch.jsx";
+import Stopwatch from "./modules/timer/Stopwatch.js";
+import StopwatchComponent from "./modules/timer/components/Stopwatch.jsx";
 
-import Timer from "./apps/timer/Timer.js";
-import TimerComponent from "./apps/timer/components/Timer.jsx";
+import Timer from "./modules/timer/Timer.js";
+import TimerComponent from "./modules/timer/components/Timer.jsx";
 
-import Geolocation from "./apps/geolocation/Geolocation.js";
-import GeolocationComponent from "./apps/geolocation/components/Geolocation.jsx";
+import Geolocation from "./modules/geolocation/Geolocation.js";
+import GeolocationComponent from "./modules/geolocation/components/Geolocation.jsx";
 
-import DeckOfCards from "./apps/random/DeckOfCards.js";
-import DeckOfCardsComponent from "./apps/random/components/DeckOfCards.jsx";
+import DeckOfCards from "./modules/random/DeckOfCards.js";
+import DeckOfCardsComponent from "./modules/random/components/DeckOfCards.jsx";
 
-import Dice from "./apps/random/Dice.js";
-import DiceComponent from "./apps/random/components/Dice.jsx";
+import Dice from "./modules/random/Dice.js";
+import DiceComponent from "./modules/random/components/Dice.jsx";
 
-import WeightedDice from "./apps/random/WeightedDice.js";
-import WeightedDiceComponent from "./apps/random/components/WeightedDice.jsx";
+import WeightedDice from "./modules/random/WeightedDice.js";
+import WeightedDiceComponent from "./modules/random/components/WeightedDice.jsx";
 
 export function App() {
 	const stopwatch = useRef(Stopwatch.Factory());
