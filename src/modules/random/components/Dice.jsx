@@ -1,5 +1,5 @@
 import React from "react";
-import { useFlux } from "../../flux/hooks/useFlux";
+import { useFlux } from "../../../flux/hooks/useFlux";
 
 export const Dice = ({ dice }) => {
 	const flux = useFlux(dice);

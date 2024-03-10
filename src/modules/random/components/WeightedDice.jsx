@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useFlux } from "../../flux/hooks/useFlux";
+import { useFlux } from "../../../flux/hooks/useFlux";
 
 export const WeightedDice = ({ weightedDice }) => {
 	const flux = useFlux(weightedDice);
@@ -31,7 +31,7 @@ export const WeightedDice = ({ weightedDice }) => {
 		weightedDice.actions.setWeights(weightsArray);
 	};
 
-	const handleRollDice = () => weightedDice.actions.rollDice();
+	const handleRoll = () => weightedDice.actions.roll();
 	const handleResetResults = () => weightedDice.actions.resetResults();
 
 	return (
@@ -42,7 +42,7 @@ export const WeightedDice = ({ weightedDice }) => {
 					Weights (comma-separated):
 					<input type="text" value={ weightsInput } onChange={ handleChangeWeights } onBlur={ handleUpdateWeights } />
 				</label>
-				<button onClick={ handleRollDice }>Roll Dice</button>
+				<button onClick={ handleRoll }>Roll Dice</button>
 				<button onClick={ handleResetResults }>Reset Results</button>
 			</div>
 			<div>
@@ -61,9 +61,9 @@ export const WeightedDice = ({ weightedDice }) => {
 				<h3>Statistics:</h3>
 				{ history.length > 0 ? (
 					<ul>
-						<li>Odds: { stats.odds.toString() }</li>
+						<li>Theoretical: { stats.odds.toString() }</li>
+						<li>Actual: { distributionOdds.toString() }</li>
 						<li>Distribution: { stats.dist.toString() }</li>
-						<li>Dist. Odds: { distributionOdds.toString() }</li>
 						<li>Mean: { stats.mean.toFixed(2) }</li>
 						<li>Median: { stats.median.toFixed(2) }</li>
 						<li>Mode: { stats.mode.toFixed(2) }</li>

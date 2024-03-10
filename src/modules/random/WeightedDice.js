@@ -1,7 +1,7 @@
-import Flux from "../flux/Flux.js";
+import Flux from "../../flux/Flux.js";
 
 export const Helpers = {
-	rollDice: (weights) => {
+	roll: (weights) => {
 		if(!weights || weights.length === 0) {
 			return Math.random();
 		}
@@ -56,8 +56,8 @@ export const Reducers = (helpers) => ({
 		...state,
 		weights: action.weights
 	}),
-	rollDice: (state) => {
-		const result = helpers.rollDice(state.weights);
+	roll: (state) => {
+		const result = helpers.roll(state.weights);
 		const newHistory = [ ...state.history, { result } ];
 		const newStats = helpers.calculateStats(newHistory, state.weights);
 		return {
@@ -77,8 +77,8 @@ export const Actions = (flux) => ({
 	setWeights: (weights) => {
 		flux.dispatch({ type: "setWeights", weights });
 	},
-	rollDice: () => {
-		flux.dispatch({ type: "rollDice" });
+	roll: () => {
+		flux.dispatch({ type: "roll" });
 	},
 	resetResults: () => {
 		flux.dispatch({ type: "resetResults" });

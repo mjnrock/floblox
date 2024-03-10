@@ -1,4 +1,4 @@
-import Flux from "../flux/Flux.js";
+import Flux from "../../flux/Flux.js";
 
 export const State = ({
 	duration,

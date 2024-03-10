@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useFlux } from "../../flux/hooks/useFlux";
+import { useFlux } from "../../../flux/hooks/useFlux";
 
 
 export const Stopwatch = ({ stopwatch }) => {

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { useFlux } from "../../flux/hooks/useFlux";
+import { useFlux } from "../../../flux/hooks/useFlux";
 
 export const Geolocation = ({ geo }) => {
 	const flux = useFlux(geo);
