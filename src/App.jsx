@@ -6,14 +6,14 @@ import StopwatchComponent from "./apps/timer/components/Stopwatch.jsx";
 import Timer from "./apps/timer/Timer.js";
 import TimerComponent from "./apps/timer/components/Timer.jsx";
 
-import Geolocation from "./apps/timer/Geolocation.js";
-import GeolocationComponent from "./apps/timer/components/Geolocation.jsx";
+import Geolocation from "./apps/geolocation/Geolocation.js";
+import GeolocationComponent from "./apps/geolocation/components/Geolocation.jsx";
 
-import DeckOfCards from "./apps/timer/DeckOfCards.js";
-import DeckOfCardsComponent from "./apps/timer/components/DeckOfCards.jsx";
+import DeckOfCards from "./apps/random/DeckOfCards.js";
+import DeckOfCardsComponent from "./apps/random/components/DeckOfCards.jsx";
 
-import Dice from "./apps/timer/Dice.js";
-import DiceComponent from "./apps/timer/components/Dice.jsx";
+import Dice from "./apps/random/Dice.js";
+import DiceComponent from "./apps/random/components/Dice.jsx";
 
 export function App() {
 	const stopwatch = useRef(Stopwatch.Factory());
@@ -22,7 +22,9 @@ export function App() {
 		loop: true,
 	}));
 	const geo = useRef(Geolocation.Factory());
-	const deck = useRef(DeckOfCards.Factory());
+	const deck = useRef(DeckOfCards.Factory({
+		seed: 2,
+	}));
 	const dice = useRef(Dice.Factory(6));
 
 	return (

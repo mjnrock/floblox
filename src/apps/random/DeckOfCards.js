@@ -1,7 +1,7 @@
 import Flux from "../flux/Flux.js";
 
 export const Helpers = {
-	generateDeck: () => {
+	generateDeck: (seed = 1) => {
 		const suits = [ "Clubs", "Diamonds", "Hearts", "Spades" ];
 		const ranks = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" ];
 		let deck = [];
@@ -10,6 +10,10 @@ export const Helpers = {
 			for(let rank of ranks) {
 				deck.push({ rank, suit });
 			}
+		}
+
+		if(seed) {
+			Helpers.shuffleArray(deck, seed);
 		}
 
 		return deck;
@@ -31,8 +35,8 @@ export const Helpers = {
 	}
 };
 
-export const State = () => ({
-	deck: Helpers.generateDeck(),
+export const State = ({ seed } = {}) => ({
+	deck: Helpers.generateDeck(seed),
 	dealtCards: [],
 	discardedCards: [],
 	remainingCards: 52,
@@ -74,8 +78,8 @@ export const Reducers = (helpers) => ({
 		return {
 			...state,
 			deck: combinedDeck,
-			discardedCards: [], // Clear discardedCards after they are shuffled back into the deck
-			remainingCards: combinedDeck.length, // Update remainingCards count
+			discardedCards: [],
+			remainingCards: combinedDeck.length,
 		};
 	},
 	discard: (state) => {
@@ -109,8 +113,8 @@ export const Actions = (flux) => ({
 	},
 });
 
-export const Factory = () => {
-	const initialState = State();
+export const Factory = (args = {}) => {
+	const initialState = State(args);
 	const reducers = Reducers(Helpers);
 	const config = {
 		state: initialState,
