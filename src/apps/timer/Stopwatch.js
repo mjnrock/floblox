@@ -61,6 +61,8 @@ export const Actions = (flux) => ({
 		clearFn();
 		flux.dispatch({ type: "stop" });
 	},
+	reset: () => flux.dispatch({ type: "reset" }),
+	lap: () => flux.dispatch({ type: "lap" }),
 });
 
 export const Factory = (state) => {
@@ -72,7 +74,10 @@ export const Factory = (state) => {
 		],
 	};
 
-	return Flux.Factory(config);
+	const flux = Flux.Factory(config);
+	flux.actions = Actions(flux);
+
+	return flux;
 };
 
 export default {

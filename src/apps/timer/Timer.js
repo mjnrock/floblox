@@ -139,7 +139,10 @@ export const Factory = ({ duration, loop } = {}) => {
 		],
 	};
 
-	return Flux.Factory(config);
+	const flux = Flux.Factory(config);
+	flux.actions = Actions(flux);
+
+	return flux;
 };
 
 export default {

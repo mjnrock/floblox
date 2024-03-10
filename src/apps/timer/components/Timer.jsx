@@ -1,8 +1,6 @@
 import { useRef } from "react";
 import { useFlux } from "../../flux/hooks/useFlux";
 
-import { Actions } from "../Timer";
-
 export const Timer = ({ timer }) => {
 	const flux = useFlux(timer);
 	const elapsedTime = flux.useSelector(state => state.elapsedTime);
@@ -11,17 +9,16 @@ export const Timer = ({ timer }) => {
 	const duration = flux.useSelector(state => state.duration);
 	const counter = flux.useSelector(state => state.counter);
 
-	const actions = Actions(timer);
 	let clearFn = useRef();
 
 	const handleStartResume = () => {
 		if(!running) {
-			clearFn.current = actions.start({ interval: 10 });
+			clearFn.current = timer.actions.start({ interval: 10 });
 		}
 	};
-	const handlePause = () => actions.pause(clearFn.current);
-	const handleReset = () => actions.reset();
-	const handleToggleLoop = () => actions.toggleLoop();
+	const handlePause = () => timer.actions.pause(clearFn.current);
+	const handleReset = () => timer.actions.reset();
+	const handleToggleLoop = () => timer.actions.toggleLoop();
 
 	return (
 		<div>

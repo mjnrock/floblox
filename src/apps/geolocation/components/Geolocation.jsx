@@ -1,13 +1,10 @@
 import { useRef, useEffect } from "react";
 import { useFlux } from "../../flux/hooks/useFlux";
-import { Actions } from "../Geolocation";
 
 export const Geolocation = ({ geo }) => {
 	const flux = useFlux(geo);
 	const currentLocation = flux.useSelector(state => state.currentLocation);
 	const tracking = flux.useSelector(state => state.tracking);
-
-	const actions = Actions(geo);
 
 	const stopTrackingFn = useRef(() => { });
 
@@ -23,17 +20,15 @@ export const Geolocation = ({ geo }) => {
 		if(tracking) {
 			stopTrackingFn.current();
 		} else {
-			actions.startTracking();
-			stopTrackingFn.current = actions.stopTracking;
+			geo.actions.startTracking();
+			stopTrackingFn.current = geo.actions.stopTracking;
 		}
 	};
-
 	const handleGetCurrentLocation = () => {
-		actions.getCurrentLocation();
+		geo.actions.getCurrentLocation();
 	};
-
 	const handleStopAndClearTracking = () => {
-		actions.stopAndClearTracking();
+		geo.actions.stopAndClearTracking();
 	};
 
 	const locationDisplay = currentLocation

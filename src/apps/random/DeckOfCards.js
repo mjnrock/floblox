@@ -122,7 +122,10 @@ export const Factory = (args = {}) => {
 		effects: [],
 	};
 
-	return Flux.Factory(config);
+	const flux = Flux.Factory(config);
+	flux.actions = Actions(flux);
+
+	return flux;
 };
 
 export default {

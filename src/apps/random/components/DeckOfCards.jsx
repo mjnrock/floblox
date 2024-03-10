@@ -1,5 +1,4 @@
 import { useFlux } from "../../flux/hooks/useFlux";
-import { Actions } from "../DeckOfCards";
 
 export const DeckOfCards = ({ deckOfCards }) => {
 	const flux = useFlux(deckOfCards);
@@ -8,13 +7,11 @@ export const DeckOfCards = ({ deckOfCards }) => {
 	const remainingCards = flux.useSelector(state => state.remainingCards);
 	const discardedCards = flux.useSelector(state => state.discardedCards);
 
-	const actions = Actions(deckOfCards);
-
-	const handleShuffle = () => actions.shuffle();
-	const handleDealOneCard = () => actions.dealOneCard();
-	const handleResetDeck = () => actions.resetDeck();
-	const handleShuffleRemaining = () => actions.shuffleRemaining();
-	const handleDiscard = () => actions.discard();
+	const handleShuffle = () => deckOfCards.actions.shuffle();
+	const handleDealOneCard = () => deckOfCards.actions.dealOneCard();
+	const handleResetDeck = () => deckOfCards.actions.resetDeck();
+	const handleShuffleRemaining = () => deckOfCards.actions.shuffleRemaining();
+	const handleDiscard = () => deckOfCards.actions.discard();
 
 	return (
 		<div>

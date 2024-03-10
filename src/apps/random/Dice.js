@@ -30,8 +30,8 @@ export const Helpers = {
 	}
 };
 
-export const State = () => ({
-	sides: 6,
+export const State = ({ sides = 6 } = {}) => ({
+	sides,
 	history: [],
 	stats: { mean: 0, median: 0, mode: 0, range: 0, min: 0, max: 0, sum: 0 },
 });
@@ -70,8 +70,8 @@ export const Actions = (flux) => ({
 	}
 });
 
-export const Factory = () => {
-	const initialState = State();
+export const Factory = (args = {}) => {
+	const initialState = State(args);
 	const reducers = Reducers(Helpers);
 	const config = {
 		state: initialState,
@@ -79,7 +79,10 @@ export const Factory = () => {
 		effects: []
 	};
 
-	return Flux.Factory(config);
+	const flux = Flux.Factory(config);
+	flux.actions = Actions(flux);
+
+	return flux;
 };
 
 export default {

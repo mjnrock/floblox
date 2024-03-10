@@ -1,6 +1,5 @@
 import React from "react";
 import { useFlux } from "../../flux/hooks/useFlux";
-import { Actions } from "../Dice";
 
 export const Dice = ({ dice }) => {
 	const flux = useFlux(dice);
@@ -8,14 +7,11 @@ export const Dice = ({ dice }) => {
 	const history = flux.useSelector(state => state.history);
 	const stats = flux.useSelector(state => state.stats);
 
-	const actions = Actions(dice);
-
 	const handleChangeSides = (e) => {
-		actions.setSides(parseInt(e.target.value, 10));
+		dice.actions.setSides(parseInt(e.target.value, 10));
 	};
-
-	const handleRollDice = () => actions.rollDice();
-	const handleResetResults = () => actions.resetResults();
+	const handleRollDice = () => dice.actions.rollDice();
+	const handleResetResults = () => dice.actions.resetResults();
 
 	return (
 		<div>
