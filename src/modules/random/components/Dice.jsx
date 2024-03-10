@@ -16,11 +16,11 @@ export const Dice = ({ dice }) => {
 	return (
 		<div>
 			<h2>Dice</h2>
+			<label>
+				Number of sides:
+				<input type="number" value={ sides } onChange={ handleChangeSides } min="1" />
+			</label>
 			<div>
-				<label>
-					Number of sides:
-					<input type="number" value={ sides } onChange={ handleChangeSides } min="1" />
-				</label>
 				<button onClick={ handleRollDice }>Roll Dice</button>
 				<button onClick={ handleResetResults }>Reset Results</button>
 			</div>

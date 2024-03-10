@@ -33,12 +33,14 @@ export const Geolocation = ({ geo }) => {
 	return (
 		<div>
 			<h2>Geolocation</h2>
+			<div>
+				<button onClick={ handleGetCurrentLocation }>Get Location</button>
+				<button onClick={ handleToggleTracking }>
+					{ tracking ? "Stop Tracking" : "Start Tracking" }
+				</button>
+				<button onClick={ handleStopAndClearTracking }>Stop and Clear Tracking</button>
+			</div>
 			<p>{ locationDisplay }</p>
-			<button onClick={ handleGetCurrentLocation }>Get Location</button>
-			<button onClick={ handleToggleTracking }>
-				{ tracking ? "Stop Tracking" : "Start Tracking" }
-			</button>
-			<button onClick={ handleStopAndClearTracking }>Stop and Clear Tracking</button>
 		</div>
 	);
 };

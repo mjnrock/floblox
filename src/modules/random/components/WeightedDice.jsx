@@ -37,11 +37,11 @@ export const WeightedDice = ({ weightedDice }) => {
 	return (
 		<div>
 			<h2>Weighted Dice</h2>
+			<label>
+				Weights (comma-separated):
+				<input type="text" value={ weightsInput } onChange={ handleChangeWeights } onBlur={ handleUpdateWeights } />
+			</label>
 			<div>
-				<label>
-					Weights (comma-separated):
-					<input type="text" value={ weightsInput } onChange={ handleChangeWeights } onBlur={ handleUpdateWeights } />
-				</label>
 				<button onClick={ handleRoll }>Roll Dice</button>
 				<button onClick={ handleResetResults }>Reset Results</button>
 			</div>

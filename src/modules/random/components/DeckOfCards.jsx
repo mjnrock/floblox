@@ -18,21 +18,27 @@ export const DeckOfCards = ({ deckOfCards }) => {
 
 	return (
 		<div>
-			<h2>Deck of Cards</h2>
+			<div>
+				<h2>Deck of Cards</h2>
+				<label>
+					Seed:
+					<input
+						name="seed"
+						type="number"
+						value={ newSeed }
+						onChange={ (e) => setNewSeed(e.target.value) }
+						placeholder="Enter new seed"
+					/>
+				</label>
+			</div>
+			<div>
+				<button onClick={ handleShuffle }>Shuffle Deck</button>
+				<button onClick={ handleDealOneCard } disabled={ remainingCards === 0 }>Deal One Card</button>
+				<button onClick={ handleDiscard } disabled={ remainingCards === 0 }>Discard One Card</button>
+				<button onClick={ handleShuffleRemaining }>Shuffle Remaining</button>
+				<button onClick={ handleResetDeck }>Reseed and Reset Deck</button>
+			</div>
 			<p>Remaining Cards: { remainingCards }</p>
-			<label htmlFor="seed">Seed:</label>
-			<input
-				name="seed"
-				type="number"
-				value={ newSeed }
-				onChange={ (e) => setNewSeed(e.target.value) }
-				placeholder="Enter new seed"
-			/>
-			<button onClick={ handleShuffle }>Shuffle Deck</button>
-			<button onClick={ handleDealOneCard } disabled={ remainingCards === 0 }>Deal One Card</button>
-			<button onClick={ handleDiscard } disabled={ remainingCards === 0 }>Discard One Card</button>
-			<button onClick={ handleShuffleRemaining }>Shuffle Remaining</button>
-			<button onClick={ handleResetDeck }>Reseed and Reset Deck</button>
 			<div>
 				<h3>Dealt Cards:</h3>
 				{ dealtCards.length > 0 ? (

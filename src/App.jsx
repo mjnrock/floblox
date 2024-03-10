@@ -18,6 +18,15 @@ import DiceComponent from "./modules/random/components/Dice.jsx";
 import WeightedDice from "./modules/random/WeightedDice.js";
 import WeightedDiceComponent from "./modules/random/components/WeightedDice.jsx";
 
+import { createGlobalStyle } from "styled-components";
+import tw from "twin.macro";
+
+const GlobalStyle = createGlobalStyle`
+button {
+  ${ tw`bg-emerald-500 border-emerald-100 border text-white py-4 px-8 rounded` }
+}
+`;
+
 export function App() {
 	const stopwatch = useRef(Stopwatch.Factory());
 	const timer = useRef(Timer.Factory({
@@ -35,14 +44,31 @@ export function App() {
 	}));
 
 	return (
-		<div>
-			<StopwatchComponent stopwatch={ stopwatch?.current } />
-			<TimerComponent timer={ timer?.current } />
-			<GeolocationComponent geo={ geo?.current } />
-			<DeckOfCardsComponent deckOfCards={ deck?.current } />
-			<DiceComponent dice={ dice?.current } />
-			<WeightedDiceComponent weightedDice={ weightedDice?.current } />
-		</div>
+		<>
+			<GlobalStyle />
+			<div
+				className="flex flex-col items-center justify-center w-screen bg-gray-800 text-white font-mono text-lg gap-2 p-2"
+			>
+				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+					<StopwatchComponent stopwatch={ stopwatch?.current } />
+				</div>
+				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+					<TimerComponent timer={ timer?.current } />
+				</div>
+				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+					<GeolocationComponent geo={ geo?.current } />
+				</div>
+				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+					<DeckOfCardsComponent deckOfCards={ deck?.current } />
+				</div>
+				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+					<DiceComponent dice={ dice?.current } />
+				</div>
+				<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+					<WeightedDiceComponent weightedDice={ weightedDice?.current } />
+				</div>
+			</div>
+		</>
 	);
 }
 
