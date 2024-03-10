@@ -1,4 +1,6 @@
 export class Node {
+	static New = (module, actions, config) => new Node(module, actions, config);
+
 	constructor (module, actions, config) {
 		if(config) {
 			this.module = module(config);
@@ -11,12 +13,12 @@ export class Node {
 
 	subscribe(...fns) {
 		for(let fn of fns) {
-			this.actions.subscribe(fn);
+			this.module.subscribe(fn);
 		};
 	}
 	unsubscribe(...fns) {
 		for(let fn of fns) {
-			this.actions.unsubscribe(fn);
+			this.module.unsubscribe(fn);
 		};
 	}
 
@@ -30,14 +32,41 @@ export class Node {
 };
 
 export const orchestrate = (relationships = []) => {
+	if(Array.isArray(relationships[ 0 ])) {
+		let cleanup = [];
+		for(const relationship of relationships) {
+			const [ fromAction, fromNode, toAction, toNode ] = relationship;
+			const effect = () => toNode.action(toAction);
+			fromNode.module.subscribeTo(fromAction, effect);
+
+			const cleanupEffect = () => toNode.unsubscribe(effect);
+			cleanup.push(cleanupEffect);
+		}
+
+		return cleanup;
+	}
+
+
 	let cleanup = [];
 	for(const relationship of relationships) {
-		const [ fromAction, fromNode, toAction, toNode ] = relationship;
-		const effect = () => toNode.action(toAction);
+		const { from, to, iff } = relationship;
+		const [ fromNode, fromAction ] = from;
+		const [ toNode, toAction ] = to;
+
+		let effect;
+		if(iff) {
+			effect = () => {
+				if(iff({ ...fromNode.module.getState() }, { ...toNode.module.getState() })) {
+					toNode.action(toAction);
+				}
+			};
+		} else {
+			effect = () => toNode.action(toAction);
+		}
 		fromNode.module.subscribeTo(fromAction, effect);
 
 		const cleanupEffect = () => toNode.unsubscribe(effect);
-		cleanup.push([ relationship, cleanupEffect ]);
+		cleanup.push(cleanupEffect);
 	}
 
 	return cleanup;
