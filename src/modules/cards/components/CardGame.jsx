@@ -53,7 +53,7 @@ export const CardGame = ({ cardGame }) => {
 				{ players.length > 0 ? (
 					players.map((player, index) => (
 						<div key={ index }>
-							<h4>{ player.id }</h4>
+							<strong>{ player.id }</strong>
 							<ul>
 								{ player.hand.map((card, index) => (
 									<li key={ index }>{ card.rank } of { card.suit }</li>
