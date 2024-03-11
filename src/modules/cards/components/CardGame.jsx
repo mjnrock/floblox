@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useFlux } from "../../flux/hooks/useFlux.js";
+import { useFlux } from "../../../flux/hooks/useFlux.js";
 
 export const CardGame = ({ cardGame }) => {
 	const flux = useFlux(cardGame);

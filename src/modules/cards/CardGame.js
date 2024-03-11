@@ -1,5 +1,6 @@
 import Flux from "../../flux/Flux.js";
-import DeckOfCards from "../../modules/random/DeckOfCards.js";
+
+import DeckOfCards from "./DeckOfCards.js";
 
 export const Helpers = {
 	generateMultipleDecks: (numberOfDecks = 1, seed = 1) => {
@@ -109,7 +110,11 @@ export const Factory = (args = {}) => {
 	const config = {
 		state: initialState,
 		reducers: reducers,
-		effects: [],
+		effects: [
+			state => {
+				console.log(state);
+			}
+		],
 	};
 
 	const flux = Flux.Factory(config);
