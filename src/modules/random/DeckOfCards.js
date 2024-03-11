@@ -135,6 +135,7 @@ export const Factory = (args = {}) => {
 };
 
 export default {
+	Helpers,
 	State,
 	Reducers,
 	Actions,

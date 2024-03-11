@@ -21,6 +21,9 @@ import WeightedDiceComponent from "./modules/random/components/WeightedDice.jsx"
 import { createGlobalStyle } from "styled-components";
 import tw from "twin.macro";
 
+import CardGame from "./apps/card-game/CardGame.js";
+import CardGameComponent from "./apps/card-game/CardGame.jsx";
+
 const GlobalStyle = createGlobalStyle`
 	body {
 		${ tw`text-center` }
@@ -62,6 +65,11 @@ export function App() {
 		weights: [ 1, 1 ],
 	}));
 
+	const cardGame = useRef(CardGame.Factory({
+		numberOfDecks: 1,
+		seed: 1,
+	}));
+
 	/* Convenience wrapper since we're using the same pattern for each module */
 	const modules = [
 		[ StopwatchComponent, { stopwatch: stopwatch?.current } ],
@@ -75,12 +83,16 @@ export function App() {
 	return (
 		<>
 			<GlobalStyle />
+			<CardGameComponent cardGame={ cardGame?.current } />
 			<div
 				className="flex flex-col items-center justify-center w-screen bg-gray-800 text-white font-mono text-lg gap-2 p-2"
 			>
 				{
 					modules.map(([ Component, props ], index) => (
-						<div className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded">
+						<div
+							key={ index }
+							className="w-full flex flex-row items-center justify-center space-x-4 border border-solid border-white p-4 rounded"
+						>
 							<Component key={ index } { ...props } />
 						</div>
 					))
