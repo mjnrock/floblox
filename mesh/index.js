@@ -19,6 +19,7 @@ async function main() {
 		client.send({ message: "Hello, WebSocket server!" });
 
 		setTimeout(() => {
+			// Test the reconnect functionality
 			client.disconnect();
 			// New approach to close both the WebSocket server and HTTP server
 			// wss.close(() => {

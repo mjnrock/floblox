@@ -13,13 +13,12 @@ const clientMetaInitializer = (dossier) => {
 const createWebSocketClient = ({
 	url = "ws://localhost:3900",
 	reconnectDelays = [ 1000, 5000, 5000 ],
-	maxReconnectAttempts,
 	subscribers = [],
 	autoConnect = false,
 	dossier,
 } = {}) => {
-	let reconnectAttempts = 0;
 	let maxReconnectAttempts = reconnectDelays.length;
+	let reconnectAttempts = 0;
 	let ws;
 
 	const connect = (dossier) => {
@@ -37,7 +36,7 @@ const createWebSocketClient = ({
 				data: ws.meta,
 				ts: Date.now(),
 			});
-			reconnectAttempts = 0;
+			reconnectAttempts = 0; // Reset on successful connection
 		});
 
 		ws.on("message", (data) => {
@@ -105,17 +104,13 @@ const createWebSocketClient = ({
 	};
 };
 
-export const main = async ({ url = "ws://localhost:3900", dossier, config, autoConnect } = {}) => {
-	const clientConfig = {
+export const main = async ({ url = "ws://localhost:3900", dossier, config = {}, autoConnect } = {}) => {
+	const client = createWebSocketClient({
 		url,
 		autoConnect,
 		...config,
-	};
-	const client = createWebSocketClient(clientConfig);
-
-	if(clientConfig.autoConnect) {
-		client.connect(dossier);
-	}
+		dossier,
+	});
 
 	return client;
 };
