@@ -11,15 +11,15 @@ const clientMetaInitializer = (dossier) => {
 };
 
 const createWebSocketClient = ({
-	url = "wss://localhost:3900",
-	reconnectInterval = 1000,
-	maxReconnectInterval = 30000,
-	maxReconnectAttempts = 10,
+	url = "ws://localhost:3900",
+	reconnectDelays = [ 1000, 5000, 5000 ],
+	maxReconnectAttempts,
 	subscribers = [],
 	autoConnect = false,
 	dossier,
 } = {}) => {
 	let reconnectAttempts = 0;
+	let maxReconnectAttempts = reconnectDelays.length;
 	let ws;
 
 	const connect = (dossier) => {
@@ -54,17 +54,16 @@ const createWebSocketClient = ({
 			console.error(`[${ Date.now() }]: `, err);
 			handleReconnection(dossier);
 		});
-
-		return ws;
 	};
 
 	const handleReconnection = (dossier) => {
 		if(reconnectAttempts < maxReconnectAttempts) {
+			const delay = reconnectDelays[ reconnectAttempts ];
 			setTimeout(() => {
 				console.log(`Attempting to reconnect... Attempt #${ reconnectAttempts + 1 }`);
 				connect(dossier);
 				reconnectAttempts++;
-			}, Math.min(reconnectInterval * Math.pow(2, reconnectAttempts), maxReconnectInterval));
+			}, delay);
 		} else {
 			console.log("Max reconnection attempts reached. Giving up.");
 		}
@@ -93,7 +92,7 @@ const createWebSocketClient = ({
 		}
 	};
 
-	if(autoConnect === true) {
+	if(autoConnect) {
 		connect(dossier);
 	}
 
@@ -106,9 +105,10 @@ const createWebSocketClient = ({
 	};
 };
 
-export async function main({ url = "wss://localhost:3900", dossier, config } = {}) {
+export const main = async ({ url = "ws://localhost:3900", dossier, config, autoConnect } = {}) => {
 	const clientConfig = {
 		url,
+		autoConnect,
 		...config,
 	};
 	const client = createWebSocketClient(clientConfig);
