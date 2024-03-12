@@ -3,7 +3,7 @@ import { WebSocketServer } from "ws";
 import http from "http";
 
 // Async main function to wrap server setup
-async function main() {
+export async function main() {
 	const app = express();
 	const server = http.createServer(app);
 	const wss = new WebSocketServer({ server });
@@ -43,8 +43,10 @@ async function main() {
 	});
 
 	// Starting the HTTP and WS server
-	const PORT = process.env.PORT || 3000;
+	const PORT = process.env.PORT ?? 3900;
 	server.listen(PORT, () => console.log(`Server running on port ${ PORT }`));
 }
 
-main().catch(err => console.error(err));
+export default {
+	main,
+};
