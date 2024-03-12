@@ -20,21 +20,47 @@ export async function main() {
 
 	// GET route
 	app.get("/", (req, res) => {
-		res.send("Hello, GET request!");
+		res.json({
+			message: "Hello, GET request!",
+			query: req.query,
+		});
 	});
 
 	// POST route
 	app.post("/", (req, res) => {
-		res.json({ message: "Hello, POST request!", body: req.body });
+		res.json({
+			message: "Hello, POST request!",
+			body: req.body,
+		});
 	});
 
-	// WebSocket setup
+
+	// WebSocket server
+	function send(ws, payload) {
+		if(typeof payload === "object") {
+			payload = JSON.stringify(payload);
+		}
+		ws.send(payload);
+	}
+	function broadcast(payload) {
+		clients.forEach(client => send(client, payload));
+	}
+	let clients = [];
 	wss.on("connection", ws => {
 		console.log("WebSocket connection established");
+		clients.push(ws);
+
 		ws.on("message", message => {
 			console.log(`Received message - ${ message }`);
 		});
-		ws.send("Hello from WebSocket server!");
+
+		ws.on("close", () => {
+			clients = clients.filter(client => client !== ws);
+		});
+
+		// Usage:
+		send(ws, { message: "Hello, WebSocket!" });
+		broadcast({ message: "Hello, all WebSockets!" });
 	});
 
 	// Fallback route for unmatched routes
@@ -45,6 +71,14 @@ export async function main() {
 	// Starting the HTTP and WS server
 	const PORT = process.env.PORT ?? 3900;
 	server.listen(PORT, () => console.log(`[${ Date.now() }][Server]: Running on port: ${ PORT }`));
+	wss.on("listening", () => console.log(`[${ Date.now() }][WebSocket]: Running on port: ${ PORT }`));
+
+	// Return the server object
+	return {
+		app,
+		http: server,
+		wss,
+	};
 }
 
 export default {
